@@ -6,7 +6,7 @@ export const userCheck = async (req, res, next) => {
 
 
     if (req.method === "GET" || req.method === "DELETE" || req.method === "PUT") {
-        const user = await User.findOne({ email: email.tolowercase() });
+        const user = await User.findOne({ email: email.toLowerCase() });
         if (user) {
             req.User = user;
             next();
@@ -15,6 +15,12 @@ export const userCheck = async (req, res, next) => {
 
         }
     } else if (req.method === "POST") {
-        const existingUser = await User.findOne({ email: email.tolowercase() });
+        const existingUser = await User.findOne({ email: email.toLowerCase() });
+
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists" });
+        } else {
+            next();
+        }
     }
 }
