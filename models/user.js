@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AWindows_10_Default_Profile_Picture.svg&psig=AOvVaw1mi96GQD1vpUBnc1rSwB8L&ust=1709027300064000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIiL7vrcyIQDFQAAAAAdAAAAABAE'
+        default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/512px-Windows_10_Default_Profile_Picture.svg.png?20221210150350'
 
     },
     birthdate: {
