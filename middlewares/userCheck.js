@@ -1,4 +1,5 @@
-import User from '../models/user.js';
+import User from './models/user.js';
+
 
 export const userCheck = async (req, res, next) => {
     const { email } = req.body;
@@ -7,7 +8,7 @@ export const userCheck = async (req, res, next) => {
     if (req.method === "GET" || req.method === "DELETE" || req.method === "PUT") {
         const user = await User.findOne({ email: email.tolowercase() });
         if (user) {
-            req.user = user;
+            req.User = user;
             next();
         } else {
             return res.status(404).json({ message: "User not found" });
