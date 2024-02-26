@@ -16,6 +16,9 @@ const postSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    expired: {
+        type: Date,
+    },
     likes: {
         type: Array
     },
