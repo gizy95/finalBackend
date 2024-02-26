@@ -9,12 +9,7 @@ const gameSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    
-    created: {
-        type: Date,
-        default: Date.now
-    },
-     API: {
+      API: {
         type: String,
         required: true
 }
