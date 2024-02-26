@@ -10,10 +10,11 @@ const gameSchema = new mongoose.Schema({
         required: true
     },
 
-     API: {
+    API: {
         type: String,
-        required: true
-}
+        // required: true
+    }
+
 });
 
 const Game = mongoose.model('Game', gameSchema);
