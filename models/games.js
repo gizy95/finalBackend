@@ -12,7 +12,7 @@ const gameSchema = new mongoose.Schema({
 
     API: {
         type: String,
-        required: true
+        // required: true
     }
 
 });
