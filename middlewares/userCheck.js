@@ -16,15 +16,3 @@ export const userCheck = async (req, res, next) => {
         }
     }else if (req.method === "POST") {
         const existingUser = await User.findOne({ email: email.tolowercase() });
-
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
-        } else {
-            next();
-        }
-    }
-
-}
-
-        
- 
