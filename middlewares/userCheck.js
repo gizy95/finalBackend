@@ -3,7 +3,7 @@ import User from './models/user.js';
 
 export const userCheck = async (req, res, next) => {
     const { email } = req.body;
-    
+
 
     if (req.method === "GET" || req.method === "DELETE" || req.method === "PUT") {
         const user = await User.findOne({ email: email.tolowercase() });
@@ -12,7 +12,9 @@ export const userCheck = async (req, res, next) => {
             next();
         } else {
             return res.status(404).json({ message: "User not found" });
-            
+
         }
-    }else if (req.method === "POST") {
+    } else if (req.method === "POST") {
         const existingUser = await User.findOne({ email: email.tolowercase() });
+    }
+}
