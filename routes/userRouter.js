@@ -6,6 +6,6 @@ import { userCheck } from '../middlewares/userCheck.js'
 const userRoutes = express.Router();
 
 userRoutes.post("/", userCheck, postUser)
-userRouter.put('/:id', modifyUser);
+userRoutes.put('/:id', modifyUser);
 
 export default userRoutes;
