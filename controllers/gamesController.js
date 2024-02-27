@@ -1,5 +1,6 @@
 import Games from '../models/games.js';
 
+
 export const postGame = async (req, res) => {
     try {
         const {name, image} = req.body;

@@ -29,7 +29,12 @@ const postSchema = new mongoose.Schema({
     game: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Game'
-    }
+    },
+    
+    
+    
+    
 });
+
 const Post = mongoose.model('Post', postSchema);
 export default Post;
