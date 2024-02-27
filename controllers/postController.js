@@ -105,7 +105,7 @@ export const postEvent = async (req, res) => {
         event.user = { _id: user._id, name: user.name, avatar: user.avatar };
 
 
-        post.game = { _id: game._id, name: game.name };
+        event.game = { _id: game._id, name: game.name };
 
         res.status(201).json(post);
     } catch (error) {
@@ -114,6 +114,8 @@ export const postEvent = async (req, res) => {
         console.log(error);
     }
 }
+
+//  isnt it same as postdelete? do we need this? 
 export const deleteEvent = async (req, res) => {
     const { id } = req.params;
     try {
