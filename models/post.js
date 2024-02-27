@@ -12,6 +12,12 @@ const postSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    title: {
+        type: String
+    },
+    title: {
+        type: String
+    },
     created: {
         type: Date,
         default: Date.now
@@ -24,6 +30,17 @@ const postSchema = new mongoose.Schema({
     },
     comments: {
         type: Array
+    },
+    type: {
+        type: String,
+        enum: ['Solo Player', 'Team Player'],
+        default: 'Solo Player'
+    },
+    title: {
+        type: String
+    },
+    started: {
+        type: Date
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
