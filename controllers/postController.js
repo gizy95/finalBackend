@@ -93,7 +93,7 @@ export const postEvent = async (req, res) => {
             created,
             expire,
             content,
-            image,
+            // image,
             type,
             title,
             started,
@@ -115,18 +115,6 @@ export const postEvent = async (req, res) => {
     }
 }
 
-//  isnt it same as postdelete? do we need this? 
-export const deleteEvent = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const event = await Post.findByIdAndDelete(id);
-        if (!event) {
-            return res.status(404).json({ message: "Event not found" });
-        }
-        res.status(200).json(event);
-    } catch (error) {
-        console.error(error);
-        res.sendStatus(500);
-    }
-}
+
+
     
