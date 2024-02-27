@@ -3,10 +3,10 @@ import { postGame, modifyGame,getGames, getGame, deleteGame } from '../controlle
 
 const gameRoutes = express.Router();
 
-gameRoutes.post("/", postGame)
-gameRoutes.get("/", getGames)
-gameRoutes.get("/:id", getGame)
-gameRoutes.put('/:id', modifyGame);
-gameRoutes.delete('/:id', deleteGame)
+gameRoutes.post("/", postGame) //checked
+gameRoutes.get("/", getGames) // checked
+gameRoutes.get("/:id", getGame) // checked
+gameRoutes.put('/:id', modifyGame); // checked
+gameRoutes.delete('/:id', deleteGame) // checked
 
 export default gameRoutes;

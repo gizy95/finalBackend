@@ -35,6 +35,44 @@ export const postPost = async (req, res) => {
         res.sendStatus(500);
     }
 }
+export const getSinglePost = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const post = await Post.findById(id).populate('user', 'name avatar').populate('game', 'name');
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        } 
+        res.status(200).json(post);
+    
+        
+    } catch (error) {
+        res.sendStatus(500);      
+    }
+}
+
+export const getAllPosts = async (req, res) => {
+    try {
+        const posts = await Post.find().populate('user', 'name avatar').populate('game', 'name');
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+}
+
+export const deletePost = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const post = await Post.findByIdAndDelete(id);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        res.status(200).json(post);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+}
 
 export const postEvent = async (req, res) => {
     try {
@@ -73,5 +111,20 @@ export const postEvent = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
+        console.log(error);
     }
 }
+export const deleteEvent = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const event = await Post.findByIdAndDelete(id);
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+        res.status(200).json(event);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+}
+    
