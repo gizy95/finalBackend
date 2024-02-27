@@ -1,10 +1,12 @@
 import User from "../models/user.js";
+import bcrypt from 'bcrypt';
 
-export const postUser = async (req, res) => {
+export const registerUser = async (req, res) => {
 
+    const { name, email, password } = req.body;
     try {
-        const { name, email, password } = req.body;
-        const data = await User.create({ name, email, password })
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const data = await User.create({ name, email, password: hashedPassword })
         res.status(201).json(data)
     } catch (error) {
         res.sendStatus(500)
@@ -16,7 +18,7 @@ export const modifyUser = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const { name, surname, birthdate, bio } = req.body;
+        const { name, surname, birthdate, bio, avatar } = req.body;
 
         let update = {};
 
@@ -24,6 +26,7 @@ export const modifyUser = async (req, res) => {
         if (surname !== undefined) update.surname = surname;
         if (birthdate !== undefined) update.birthdate = birthdate;
         if (bio !== undefined) update.bio = bio;
+        if (avatar !== undefined) update.avatar = avatar;
 
         const data = await User.findByIdAndUpdate(id, update, { new: true })
         res.status(200).json(data)

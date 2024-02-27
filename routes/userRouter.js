@@ -1,11 +1,11 @@
 import express from 'express';
-import { postUser, modifyUser } from '../controllers/userController.js';
+import { registerUser, modifyUser } from '../controllers/userController.js';
 import { userCheck } from '../middlewares/userCheck.js'
 
 
 const userRoutes = express.Router();
 
-userRoutes.post("/", userCheck, postUser)
+userRoutes.post("/", userCheck, registerUser)
 userRoutes.put('/:id', modifyUser);
 
 export default userRoutes;

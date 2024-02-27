@@ -1,18 +1,18 @@
-import Games from '../models/games.js';
+import Games from '../models/game.js';
 
 
 export const postGame = async (req, res) => {
     try {
-        const {name, image} = req.body;
-        const data = await Games.create({name, image})
+        const { name, image } = req.body;
+        const data = await Games.create({ name, image })
         if (!data) {
             return res.status(400).json({ message: "Game not created" });
         } else {
             res.status(201).json(data)
         }
-        
+
     } catch (error) {
-        res.sendStatus(500)        
+        res.sendStatus(500)
     }
 }
 
