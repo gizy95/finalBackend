@@ -1,5 +1,5 @@
 import express from 'express';
-import { postGame, modifyGame,getGames, getGame, deleteGame } from '../controllers/gamesController.js';
+import { postGame, modifyGame,getGames, getGame, deleteGame } from '../controllers/gameController.js';
 
 const gameRoutes = express.Router();
 
