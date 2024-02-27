@@ -4,10 +4,12 @@ import Game from "../models/game.js";
 
 export const postPost = async (req, res) => {
     try {
-        const { content, image, userId, gameId } = req.body;
-        let imgBase64= '';
+        const { content, userId, gameId } = req.body;
+
+        let imgBase64 = '';
+
         if (req.file) {
-            imgBase64= req.file.buffer.toString('base64');
+            imgBase64 = req.file.buffer.toString('base64');
         }
         const user = await User.findById(userId, 'name avatar');
         if (!user) {
@@ -21,7 +23,7 @@ export const postPost = async (req, res) => {
 
         const post = await Post.create({
             content,
-            image,
+            image: imgBase64,
             user: user._id,
             game: game._id
         });
@@ -37,6 +39,7 @@ export const postPost = async (req, res) => {
         res.sendStatus(500);
     }
 }
+
 export const getSinglePost = async (req, res) => {
     const { id } = req.params;
     try {
