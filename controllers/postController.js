@@ -5,8 +5,10 @@ import Game from "../models/game.js";
 export const postPost = async (req, res) => {
     try {
         const { content, image, userId, gameId } = req.body;
-
-
+        let imgBase64= '';
+        if (req.file) {
+            imgBase64= req.file.buffer.toString('base64');
+        }
         const user = await User.findById(userId, 'name avatar');
         if (!user) {
             return res.status(404).json({ message: "User not found" });
