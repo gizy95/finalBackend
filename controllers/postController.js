@@ -36,17 +36,17 @@ export const postPost = async (req, res) => {
     }
 }
 export const getSinglePost = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     try {
         const post = await Post.findById(id).populate('user', 'name avatar').populate('game', 'name');
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
-        } 
+        }
         res.status(200).json(post);
-    
-        
+
+
     } catch (error) {
-        res.sendStatus(500);      
+        res.sendStatus(500);
     }
 }
 
@@ -73,10 +73,10 @@ export const deletePost = async (req, res) => {
         res.sendStatus(500);
     }
 }
-
+//do we wanna add a picture in the event part
 export const postEvent = async (req, res) => {
     try {
-        const { content, image, userId, gameId, created, expire, post, type, title, started } = req.body;
+        const { content, userId, gameId, expire, post, type, title, started } = req.body;
 
 
         const user = await User.findById(userId, 'name avatar');
@@ -90,10 +90,8 @@ export const postEvent = async (req, res) => {
         }
 
         const event = await Post.create({
-            created,
             expire,
             content,
-            // image,
             type,
             title,
             started,
@@ -114,7 +112,3 @@ export const postEvent = async (req, res) => {
         console.log(error);
     }
 }
-
-
-
-    
