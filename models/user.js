@@ -46,6 +46,9 @@ const userSchema = new mongoose.Schema({
     },
     bio: {
         type: String
+    },
+    GameSettings: {
+        type: Array
     }
 });
 const User = mongoose.model('User', userSchema);
