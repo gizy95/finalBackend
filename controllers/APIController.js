@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 
 async function getPUUID (Region, PlayerName) {
     const API_CALL = `https://${Region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${PlayerName}?api_key=${process.env.RIOT_API_KEY}`;
@@ -28,6 +27,9 @@ export const getMatchData = async (req, res) => {
     
     const API_CALL = `https://${changer(Region)}.api.riotgames.com/lol/match/v5/matches/by-puuid/${PUUID.puuid}/ids?api_key=${process.env.RIOT_API_KEY}`;
     const response = await fetch(API_CALL);
+    if (!response.ok) {
+        res.status(500).json({ message: "Error" });
+    }
     const matchList = await response.json();
    
     const matchData = [];
@@ -41,4 +43,16 @@ export const getMatchData = async (req, res) => {
     res.json(matchData);
     console.log(matchData);
 
+}
+export const getChampions = async (req, res) => {
+    const Region = "euw1";
+    const PlayerName = "Vala";
+    const PUUID = await getPUUID(Region,PlayerName);
+    const API_CALL = `https://${Region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${PUUID.puuid}?api_key=${process.env.RIOT_API_KEY}`;
+    const data = await fetch(API_CALL);
+    if (!data.ok) {
+        res.status(500).json({ message: "Error" });
+    }
+    const champions = await data.json();
+    res.json(champions);
 }
