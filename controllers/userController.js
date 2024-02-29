@@ -13,6 +13,21 @@ export const registerUser = async (req, res) => {
         console.log(error)
     }
 }
+export const modifyAvatar = async (req, res) => {
+    const { id } = req.params;
+    
+    let pp = req.file.buffer.toString('base64');
+    try {
+        const data = await User.findByIdAndUpdate (id, {avatar:pp}, {new: true})
+        if (!data) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(data)
+    }
+    catch (error) {
+        res.sendStatus(500)
+    }
+}
 
 export const modifyUser = async (req, res) => {
     const { id } = req.params;

@@ -4,8 +4,9 @@ import Game from "../models/game.js";
 
 export const postPost = async (req, res) => {
     try {
-        const { content, image, userId, gameId } = req.body;
+        const { content, userId, gameId } = req.body;
         let imgBase64= '';
+        
         if (req.file) {
             imgBase64= req.file.buffer.toString('base64');
         }
@@ -21,7 +22,7 @@ export const postPost = async (req, res) => {
 
         const post = await Post.create({
             content,
-            image,
+            image : imgBase64,
             user: user._id,
             game: game._id
         });
