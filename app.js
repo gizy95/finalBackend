@@ -5,6 +5,7 @@ import { connectDB } from "./db/client.js"
 import userRoutes from './routes/userRouter.js';
 import postRoutes from './routes/postRouter.js';
 import gameRoutes from './routes/gameRouter.js';
+import gameSettingsRoutes from './routes/gameSettingsRouter.js';
 
 const app = express();
 const port = 8000 || process.env.PORT;
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use("/user", userRoutes)
 app.use("/post", postRoutes)
 app.use("/games", gameRoutes)
+app.use("/gameSettings", gameSettingsRoutes)
 
 const startServer = async () => {
     await connectDB();

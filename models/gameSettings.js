@@ -9,10 +9,7 @@ const gameSettingsSchema = new mongoose.Schema({
     region: {
         type: String,
     },
-    name: {
-        type: String,
-        required: true
-    },
+
     APIUrl: {
         type: String,
         required: true
