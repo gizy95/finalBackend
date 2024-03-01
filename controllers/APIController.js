@@ -22,8 +22,8 @@ export const getUserData = async (req, res) => {
     
     
     const API_CALL = `https://${changer(Region)}.api.riotgames.com/lol/match/v5/matches/by-puuid/${PUUID.puuid}/ids?api_key=${process.env.RIOT_API_KEY}`;
-    const response = await fetch(API_CALL);
-    if (!response.ok) {
+    const data = await fetch(API_CALL);
+    if (!data.ok) {
         res.status(500).json({ message: "Error" });
     }
     const userId = await getUserBySummoner(Region, PlayerName);
