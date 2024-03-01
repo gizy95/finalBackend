@@ -36,6 +36,15 @@ export const getUserData = async (req, res) => {
     const userData = await response2.json();
     console.log(userData)
 
+    const CHAMP_CALL = `https://${Region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${PUUID.puuid}?api_key=${process.env.RIOT_API_KEY}`;
+    const response3 = await fetch(CHAMP_CALL);
+    if (!response3.ok) {
+        res.status(500).json({ message: "Error" });
+    }
+    const champions = await response3.json();
+
+
+
     const matchData = [];
     for (let i = 0; i < matchList.length - 15; i++) {
         const matchID = matchList[i];
@@ -44,19 +53,7 @@ export const getUserData = async (req, res) => {
         matchData.push(matchInfo);
         console.log(matchInfo);
     }
-    res.json({ userId, userData, matchData });
+    res.json({ userId, userData, matchData, champions });
 
 
-}
-export const getChampions = async (req, res) => {
-    const Region = "euw1";
-    const PlayerName = "Vala";
-    const PUUID = await getPUUID(Region,PlayerName);
-    const API_CALL = `https://${Region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${PUUID.puuid}?api_key=${process.env.RIOT_API_KEY}`;
-    const data = await fetch(API_CALL);
-    if (!data.ok) {
-        res.status(500).json({ message: "Error" });
-    }
-    const champions = await data.json();
-    res.json(champions);
 }
