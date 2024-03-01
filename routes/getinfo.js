@@ -1,9 +1,9 @@
 import express from 'express';
-import { getMatchData } from '../controllers/APIController.js';
+import { getUserData } from '../controllers/APIController.js';
 
 const getinfo = express.Router();
 
 
-getinfo.get("/",getMatchData)
+getinfo.get("/", getUserData)
 
 export default getinfo;

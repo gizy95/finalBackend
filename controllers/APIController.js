@@ -1,44 +1,42 @@
-import dotenv from 'dotenv';
-
-async function getPUUID (Region, PlayerName) {
+async function getUserBySummoner(Region, PlayerName) {
     const API_CALL = `https://${Region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${PlayerName}?api_key=${process.env.RIOT_API_KEY}`;
-    const data = await fetch(API_CALL);
-    const PUUID = await data.json();
-    return PUUID;
+    const response = await fetch(API_CALL);
+    const data = await response.json();
+    console.log(data)
+    return data;
 }
-function changer (Region)
-{
-    if (Region === "euw1") {
+
+function changer(Region) {
+    if (Region === "eun1") {
         return "europe";
     }
 }
-//https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/gizalo?api_key=RGAPI-3fa3778b-4019-4fd5-93e5-0d82a30b9607
-// https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/vala/1111?api_key=RGAPI-49020786-1939-446d-b9c7-a2614378db2b
+
+export const getUserData = async (req, res) => {
+
+    const Region = "eun1";
+    const PlayerName = "gizalo";
 
 
-export const getMatchData = async (req, res) => {
-// const PlayerName = req.query.PlayerName;
-    // const Region = req.query.Region;
-    const Region = "euw1";
-    const PlayerName = "Vala";
-    //get PUUID from PlayerName
-
-    const PUUID = await getPUUID(Region,PlayerName);
-    
-    
-    const API_CALL = `https://${changer(Region)}.api.riotgames.com/lol/match/v5/matches/by-puuid/${PUUID.puuid}/ids?api_key=${process.env.RIOT_API_KEY}`;
-    const response = await fetch(API_CALL);
+    const userId = await getUserBySummoner(Region, PlayerName);
+    const matchHistory = `https://${changer(Region)}.api.riotgames.com/lol/match/v5/matches/by-puuid/${userId.puuid}/ids?api_key=${process.env.RIOT_API_KEY}`;
+    const response = await fetch(matchHistory);
     const matchList = await response.json();
-   
+
+    const userInfo = `https://${Region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${userId.id}?api_key=${process.env.RIOT_API_KEY}`;
+    const response2 = await fetch(userInfo);
+    const userData = await response2.json();
+    console.log(userData)
+
     const matchData = [];
     for (let i = 0; i < matchList.length - 15; i++) {
         const matchID = matchList[i];
         const match = await fetch(`https://${changer(Region)}.api.riotgames.com/lol/match/v5/matches/${matchID}?api_key=${process.env.RIOT_API_KEY}`);
         const matchInfo = await match.json();
         matchData.push(matchInfo);
-        console.log(matchInfo);
     }
-    res.json(matchData);
-    console.log(matchData);
+    res.json({ userId, userData, matchData });
+
 
 }
+
