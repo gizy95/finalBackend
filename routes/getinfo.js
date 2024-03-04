@@ -1,10 +1,10 @@
 import express from 'express';
-import { getUserData } from '../controllers/APIController.js';
+import { getUserLOLData } from '../controllers/APIController.js';
 
 const getinfo = express.Router();
 
 
-getinfo.get("/",getUserData)
+getinfo.get("/",getUserLOLData)
 
 
 export default getinfo;

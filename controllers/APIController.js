@@ -12,7 +12,7 @@ function changer(Region) {
     }
 }
 
-export const getUserData = async (req, res) => {
+export const getUserLOLData = async (req, res) => {
 
     const Region = "eun1";
     const PlayerName = "gizalo";
@@ -57,3 +57,4 @@ export const getUserData = async (req, res) => {
 
 
 }
+
