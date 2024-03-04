@@ -68,3 +68,12 @@ export const getSingleUser = async (req, res) => {
         console.log(error)
     }
 }
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find()
+        res.status(200).json(users)
+    } catch (error) {
+        res.sendStatus(500)
+        console.log(error)
+    }
+}

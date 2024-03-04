@@ -1,10 +1,11 @@
 import express from 'express';
-import { getUserLOLData } from '../controllers/APIController.js';
+import { getUserLOLData,getUserTFTData } from '../controllers/APIController.js';
 
 const getinfo = express.Router();
 
 
-getinfo.get("/",getUserLOLData)
+getinfo.get("/lol",getUserLOLData)
+getinfo.get("/tft",getUserTFTData)
 
 
 export default getinfo;
