@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
         default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/512px-Windows_10_Default_Profile_Picture.svg.png?20221210150350'
 
     },
+    birthplace: {
+        type: String
+    },
     birthdate: {
         type: Date
     },
