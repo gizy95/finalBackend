@@ -36,8 +36,8 @@ function changer(Region) {
 
 export const getUserData = async (req, res) => {
 
-    const Region = "eun1";
-    const PlayerName = "Gizalo";
+    const Region = "euw1";
+    const PlayerName = "vala";
 
 
     const getUser = await getUserBySummoner(Region, PlayerName);
@@ -65,7 +65,7 @@ export const getUserData = async (req, res) => {
 
 
     const matchData = [];
-    for (let i = 0; i < matchList.length - 15; i++) {
+    for (let i = 0; i < matchList.length - 18; i++) {
         const matchID = matchList[i];
         const match = await fetch(`https://${changer(Region)}.api.riotgames.com/lol/match/v5/matches/${matchID}?api_key=${process.env.RIOT_API_KEY}`);
         const matchInfo = await match.json();

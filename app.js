@@ -17,7 +17,7 @@ app.use("/user", userRoutes)
 app.use("/post", postRoutes)
 app.use("/games", gameRoutes)
 app.use("/gameSettings", gameSettingsRoutes)
-app.use ("/getinfo", getinfo)
+app.use("/getinfo", getinfo)
 
 const startServer = async () => {
     await connectDB();

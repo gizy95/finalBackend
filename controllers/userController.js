@@ -1,5 +1,15 @@
 import User from "../models/user.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+
+//const secretToken = crypto.randomBytes(32).toString('hex');
+
+const secretToken = process.env.SECRET_TOKEN;
+
+const generateToken = (data) => {
+    return jwt.sign(data, secretToken, { expiresIn: '1800s' })
+}
 
 export const registerUser = async (req, res) => {
 
@@ -37,6 +47,8 @@ export const modifyUser = async (req, res) => {
     }
 }
 
+
+
 export const modifyAvatar = async (req, res) => {
     const { id } = req.params;
 
@@ -49,6 +61,30 @@ export const modifyAvatar = async (req, res) => {
         res.status(200).json(data)
     }
     catch (error) {
+        res.sendStatus(500)
+    }
+}
+
+export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        console.log(user)
+        if (!user) {
+            return res.status(404).send('User does not exist')
+        }
+
+        const validPassword = await bcrypt.compare(password, user.password)
+
+        if (!validPassword) {
+            return res.status(400).send('Invalid credentials');
+        }
+
+        const token = generateToken({ email: user.email, id: user._id })
+
+        res.json({ token, user });
+
+    } catch (err) {
         res.sendStatus(500)
     }
 }
