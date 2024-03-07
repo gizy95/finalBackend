@@ -56,7 +56,8 @@ const userSchema = new mongoose.Schema({
         type: Array
     },
     bio: {
-        type: String
+        type: String,
+        default: "Some text here"
     },
     GameSettings: {
         type: Array

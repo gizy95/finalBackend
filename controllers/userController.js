@@ -25,7 +25,7 @@ export const registerUser = async (req, res) => {
 }
 
 export const modifyUser = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.user;
 
     try {
         const { name, surname, birthdate, bio, birthplace, password, username } = req.body;
@@ -90,7 +90,7 @@ export const loginUser = async (req, res) => {
 }
 
 export const getSingleUser = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.user;
     try {
         const user = await User.findById(id)
         if (!user) {
