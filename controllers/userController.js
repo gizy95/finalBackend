@@ -1,7 +1,8 @@
 import User from "../models/user.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
+import axios from "axios";
+// import crypto from 'crypto';
 
 //const secretToken = crypto.randomBytes(32).toString('hex');
 
@@ -113,3 +114,73 @@ export const getAllUsers = async (req, res) => {
         console.log(error)
     }
 }
+
+export const loginwithDiscord = async (req, res) => {
+        const Url = "https://discord.com/oauth2/authorize?client_id=1214873733408358450&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fuser%2Fauth%2Fdiscord%2Fcallback&scope=email+identify"
+        res.redirect(Url)
+    
+}
+export const getCode = async (req, res) => {
+    if (!req.query.code) {
+        return res.status(400).json({ message: "Code not found" })
+    }
+    const code = req.query.code;
+     
+    const params = new URLSearchParams({
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: process.env.DISCORD_REDIRECT_URI,
+        scope: "identify"
+    });
+    
+    const headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept-Encoding': 'application/x-www-form-urlencoded'
+    };
+   
+    
+    const response = await axios.post('https://discord.com/api/oauth2/token',params, {
+        headers: headers
+        })
+        if (!response.status === 200) {
+            return res.status(400).json({ message: "Failed to get token" })
+            
+        }
+        // console.log("______First ROUND!!! ----------->", response.data)
+        // res.status(200).json(response.data)
+
+        const userResponse = await axios.get('https://discord.com/api/users/@me', {
+            headers: {
+                
+                Authorization: `${response.data.token_type} ${response.data.access_token}`,
+                ...headers
+                
+            }
+        });
+        const {email,id,avatar} = userResponse.data;
+        const checkUserWithDiscord = await User.findOne({email});
+        if (!checkUserWithDiscord) {
+// ---------------------------------Creating a new user with discord---------------------------------
+            const user = await User.create({email: email, discordId: id,avatar:"https://cdn.discordapp.com/avatars/"+id+"/"+avatar+".png"})
+            const token = generateToken({ email: user.email, id: user._id })
+            console.log("signed in",user)
+            return res.status(200).json({token,user})
+            
+        } else {
+            res.status(200).json({message:"User already exists"})
+        }
+
+
+        
+
+
+
+        
+    }
+
+
+
+
+

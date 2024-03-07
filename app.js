@@ -11,6 +11,7 @@ import getinfo from './routes/getinfo.js';
 const app = express();
 const port = 8000 || process.env.PORT;
 
+
 app.use(cors());
 app.use(express.json())
 app.use("/user", userRoutes)
@@ -18,6 +19,7 @@ app.use("/post", postRoutes)
 app.use("/games", gameRoutes)
 app.use("/gameSettings", gameSettingsRoutes)
 app.use("/getinfo", getinfo)
+
 
 const startServer = async () => {
     await connectDB();
