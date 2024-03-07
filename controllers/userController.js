@@ -2,7 +2,7 @@ import User from "../models/user.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import axios from "axios";
-// import crypto from 'crypto';
+import crypto from 'crypto';
 
 //const secretToken = crypto.randomBytes(32).toString('hex');
 
@@ -115,12 +115,19 @@ export const getAllUsers = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 export const loginwithDiscord = async (req, res) => {
     const Url = "https://discord.com/oauth2/authorize?client_id=1214873733408358450&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fuser%2Fauth%2Fdiscord%2Fcallback&scope=email+identify"
     res.redirect(Url)
 
+=======
+export const redirecttoDiscord = async (req, res) => {
+        const Url = "https://discord.com/oauth2/authorize?client_id=1214873733408358450&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fuser%2Fauth%2Fdiscord%2Fcallback&scope=email+identify"
+        res.redirect(Url)
+    
+>>>>>>> main
 }
-export const getCode = async (req, res) => {
+export const getCodeandSignUpwithDiscord = async (req, res) => {
     if (!req.query.code) {
         return res.status(400).json({ message: "Code not found" })
     }
@@ -168,10 +175,44 @@ export const getCode = async (req, res) => {
         console.log("signed in", user)
         return res.status(200).json({ token, user })
 
+<<<<<<< HEAD
     } else {
         res.status(200).json({ message: "User already exists" })
+=======
+        const userResponse = await axios.get('https://discord.com/api/users/@me', {
+            headers: {
+                
+                Authorization: `${response.data.token_type} ${response.data.access_token}`,
+                ...headers
+                
+            }
+        });
+        const {email,id,avatar,username} = userResponse.data;
+        const checkUserWithDiscord = await User.findOne({email});
+        if (!checkUserWithDiscord) {
+// ---------------------------------Creating a new user with discord---------------------------------
+
+            const hashedPassword = await bcrypt.hash(id, 10);
+            const user = await User.create({email: email,username: username, discordId: id,password: hashedPassword,avatar:"https://cdn.discordapp.com/avatars/"+id+"/"+avatar+".png"})
+            const token = generateToken({ email: user.email, id: user._id })
+            
+            console.log("signed in",user)
+            return res.status(200).json({token,user})
+            
+        } else {
+            
+            // ---------------------------------Logging in with discord---------------------------------
+            
+            const token = generateToken({ email: checkUserWithDiscord.email})
+            console.log(token)
+            return res.status(201).json({token,checkUserWithDiscord,message:"User already exists"})
+        }
+
+        
+>>>>>>> main
     }
 
+    
 
 
 
