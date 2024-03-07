@@ -11,8 +11,6 @@ userRoutes.post("/", userCheck, registerUser)
 userRoutes.post("/login", loginUser)
 userRoutes.put('/:id', authMiddleware, modifyUser);
 userRoutes.get('/user', authMiddleware, getSingleUser);
-userRoutes.get("/login/discord", loginwithDiscord)
-userRoutes.get("/auth/discord/callback", getCode)
 userRoutes.get("/login/discord", redirecttoDiscord)
 userRoutes.get("/auth/discord/callback", getCodeandSignUpwithDiscord)
 userRoutes.put('/avatar/:id', upload.single('avatar'), modifyAvatar);
