@@ -2,7 +2,7 @@ import User from "../models/user.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import axios from "axios";
-import crypto from 'crypto';
+
 
 //const secretToken = crypto.randomBytes(32).toString('hex');
 
@@ -135,12 +135,6 @@ export const getCodeandSignUpwithDiscord = async (req, res) => {
         redirect_uri: process.env.DISCORD_REDIRECT_URI,
         scope: "identify"
     });
-
-    const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept-Encoding': 'application/x-www-form-urlencoded'
-    };
-
 
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
