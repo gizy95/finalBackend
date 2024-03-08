@@ -82,7 +82,7 @@ export const loginUser = async (req, res) => {
         }
 
         const token = generateToken({ email: user.email, id: user._id })
-
+        
         res.json({ token, user });
 
     } catch (err) {
@@ -183,4 +183,43 @@ export const getCodeandSignUpwithDiscord = async (req, res) => {
 
 
 }
+
+export const followUser = async (req, res) => {
+    const { id } = req.params;
+    const  userId  = req.user.id;
+    try {
+        const followingUser = await User.findByIdAndUpdate(id, { $push: { followers: userId } }, { new: true })
+        const followedUser = await User.findByIdAndUpdate(userId, { $push: { following: id } }, { new: true })
+        res.status(200).json({followingUser,followedUser})
+    } catch (error) {
+        res.sendStatus(500)
+        console.log(error)
+    }
+
+}
+export const getFollowedbyUser = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findById(id).populate('followers')
+        res.status(200).json(user.followers)
+    } catch (error) {
+        res.sendStatus(500)
+        console.log(error)
+    }
+}
+   
+
+export const unfollowUser = async (req, res) => { 
+    const { id } = req.params;
+    const userId = req.user.id;
+    try {
+        const unfollowingUser = await User.findByIdAndUpdate(id, { $pull: { followers: userId } }, { new: true })
+        // const followedUser = await User.findOneAndUpdate(userId, { $pull: { following: id } }, { new: true })
+        res.status(200).json(unfollowingUser)
+    } catch (error) {
+        res.sendStatus(500)
+        console.log(error)
+    }
+}
+
 
