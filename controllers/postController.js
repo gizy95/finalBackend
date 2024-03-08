@@ -23,7 +23,7 @@ export const postPost = async (req, res) => {
 
         const post = await Post.create({
             content,
-            image,
+            // image,
             user: user._id,
             game: game._id
         });
@@ -117,3 +117,15 @@ export const postEvent = async (req, res) => {
         console.log(error);
     }
 }
+
+export const getFilteredAllPosts = async (req, res) => {
+    try {
+        const userId  = req.user._id;
+        const posts = await Post.find({ userId }).populate('user', 'name avatar').populate('game', 'name');
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    }
+}
+

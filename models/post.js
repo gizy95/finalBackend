@@ -15,9 +15,6 @@ const postSchema = new mongoose.Schema({
     title: {
         type: String
     },
-    title: {
-        type: String
-    },
     created: {
         type: Date,
         default: Date.now
@@ -36,9 +33,7 @@ const postSchema = new mongoose.Schema({
         enum: ['Solo Player', 'Team Player'],
         default: 'Solo Player'
     },
-    title: {
-        type: String
-    },
+    
     started: {
         type: Date
     },
