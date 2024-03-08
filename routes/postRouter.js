@@ -1,6 +1,7 @@
 import express from 'express';
-import { postPost,getAllPosts,deletePost,postEvent,getSinglePost } from '../controllers/postController.js';
+import { postPost,getAllPosts, getFilteredAllPosts, deletePost,postEvent,getSinglePost } from '../controllers/postController.js';
 import {upload} from '../middlewares/upload.js'
+import {authMiddleware} from '../middlewares/userToken.js'
 
 
 const postRoutes = express.Router();
@@ -8,6 +9,7 @@ const postRoutes = express.Router();
 postRoutes.post("/",upload.single('img'), postPost) //checked
 postRoutes.get("/:id", getSinglePost) //checked
 postRoutes.get("/", getAllPosts) //checked
+postRoutes.get('/:id/all',authMiddleware,getFilteredAllPosts)
 postRoutes.delete('/:id', deletePost) //checked
 postRoutes.post("/event", postEvent) //checked
 postRoutes.delete('/event/:id', deletePost) //checked

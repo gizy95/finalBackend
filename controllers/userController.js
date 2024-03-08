@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import axios from "axios";
+import Post from "../models/post.js";
 
 
 //const secretToken = crypto.randomBytes(32).toString('hex');
@@ -74,6 +75,7 @@ export const loginUser = async (req, res) => {
         if (!user) {
             return res.status(404).send('User does not exist')
         }
+        console.log('nurıa', password, user.password);
 
         const validPassword = await bcrypt.compare(password, user.password)
 
@@ -87,6 +89,7 @@ export const loginUser = async (req, res) => {
 
     } catch (err) {
         res.sendStatus(500)
+        console.log(err)
     }
 }
 
@@ -184,30 +187,81 @@ export const getCodeandSignUpwithDiscord = async (req, res) => {
 
 }
 
-export const followUser = async (req, res) => {
+export const followandUnfollowUser = async (req, res) => {
     const { id } = req.params;
     const  userId  = req.user.id;
+
     try {
-        const followingUser = await User.findByIdAndUpdate(id, { $push: { followers: userId } }, { new: true })
-        const followedUser = await User.findByIdAndUpdate(userId, { $push: { following: id } }, { new: true })
-        res.status(200).json({followingUser,followedUser})
+        const user = await User.findById(userId)
+        if (user.following.includes(id)) {
+        await User.findByIdAndUpdate(userId, { $pull: { following: id } }, { new: true })
+        await User.findByIdAndUpdate(id, { $pull: { followers: userId } }, { new: true })
+        res.status(200).json({message: "User unfollowed"})
+        } else {
+        await User.findByIdAndUpdate(userId, { $push: { following: id } }, { new: true })
+        await User.findByIdAndUpdate(id, { $push: { followers: userId } }, { new: true })
+        res.status(200).json({message: "User followed"})
+        }
     } catch (error) {
         res.sendStatus(500)
         console.log(error)
     }
-
 }
-export const getFollowedbyUser = async (req, res) => {
+
+   
+export const getFollowers = async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await User.findById(id).populate('followers')
+        const user = await User.findById(id)
         res.status(200).json(user.followers)
     } catch (error) {
         res.sendStatus(500)
         console.log(error)
     }
 }
-   
+export const getFollowings = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findById(id)
+        res.status(200).json(user.following)
+    }
+    catch (error) {
+        res.sendStatus(500)
+        console.log(error)
+    }
+}
 
+export const likeandUnlikeUser = async (req, res) => {
+    const { id } = req.params;
+    const  userId  = req.user.id;
 
+    try {
+        const post = await Post.findById(id)
+        if (post.likes.includes(userId)) {
+        await Post.findByIdAndUpdate(id, { $pull: { likes: userId } }, { new: true })
+        res.status(200).json({message: post._id,"post unliked by user_id": userId})
+        } else {
+        await Post.findByIdAndUpdate(id, { $push: { likes: userId } }, { new: true })
+        
+        res.status(200).json({message: post._id,"post lıked by user_id": userId})
+        }
+    } catch (error) {
+        res.sendStatus(500)
+        console.log(error)
+    }
+}
+export const countLikes = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const post = await Post.findById(id);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        const likeCount = post.likes.length;
+        res.status(200).json({ count: likeCount });
+    } catch (error) {
+        res.sendStatus(500);
+        console.log(error);
+    }
+}
 
