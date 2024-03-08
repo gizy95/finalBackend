@@ -4,7 +4,7 @@ import Game from "../models/game.js";
 
 export const postPost = async (req, res) => {
     try {
-        const { content, userId, gameId, image } = req.body;
+        const { content, userId, gameId } = req.body;
 
         let imgBase64 = '';
 
@@ -23,7 +23,7 @@ export const postPost = async (req, res) => {
 
         const post = await Post.create({
             content,
-            // image,
+            image: imgBase64,
             user: user._id,
             game: game._id
         });
@@ -57,7 +57,10 @@ export const getSinglePost = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
     try {
-        const posts = await Post.find().populate('user', 'name avatar').populate('game', 'name');
+        const posts = await Post.find()
+            .populate('user', 'name avatar')
+            .populate('game', 'name')
+            .sort({ created: -1 }); // Sorting in descending order based on createdAt field
         res.status(200).json(posts);
     } catch (error) {
         console.error(error);
@@ -120,7 +123,7 @@ export const postEvent = async (req, res) => {
 
 export const getFilteredAllPosts = async (req, res) => {
     try {
-        const userId  = req.user._id;
+        const userId = req.user._id;
         const posts = await Post.find({ userId }).populate('user', 'name avatar').populate('game', 'name');
         res.status(200).json(posts);
     } catch (error) {
