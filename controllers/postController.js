@@ -57,7 +57,10 @@ export const getSinglePost = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
     try {
-        const posts = await Post.find().populate('user', 'name avatar').populate('game', 'name');
+        const posts = await Post.find()
+            .populate('user', 'name avatar')
+            .populate('game', 'name')
+            .sort({ created: -1 }); // Sorting in descending order based on createdAt field
         res.status(200).json(posts);
     } catch (error) {
         console.error(error);
