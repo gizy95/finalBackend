@@ -23,7 +23,7 @@ export const postPost = async (req, res) => {
 
         const post = await Post.create({
             content,
-            image,
+            // image,
             user: user._id,
             game: game._id
         });

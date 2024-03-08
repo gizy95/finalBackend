@@ -109,3 +109,16 @@ export const getUserTFTData = async (req, res) => {
 
 }
 
+
+// export const getUserForniteData = async (req, res) => {
+//     const platform = "pc";
+//     const PlayerName = "Ninja";
+//     const FortniteAPI = `https://api.fortnitetracker.com/v1/profile/${platform}/${PlayerName}`;
+//     const response = await fetch(FortniteAPI, {
+//         headers: {
+//             "TRN-Api-Key": process.env.FORTNITE_API_KEY,
+
+// it doesnt workkkkk, couldnt find any source for it.
+// }
+
+

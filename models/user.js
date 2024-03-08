@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
     name: {
         type: String,
@@ -50,10 +51,10 @@ const userSchema = new mongoose.Schema({
         type: Array
     },
     followers: {
-        type: Array
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
     },
     following: {
-        type: Array
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
     },
     bio: {
         type: String
