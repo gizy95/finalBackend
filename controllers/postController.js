@@ -4,7 +4,7 @@ import Game from "../models/game.js";
 
 export const postPost = async (req, res) => {
     try {
-        const { content, userId, gameId, image } = req.body;
+        const { content, userId, gameId } = req.body;
 
         let imgBase64 = '';
 
@@ -23,7 +23,7 @@ export const postPost = async (req, res) => {
 
         const post = await Post.create({
             content,
-            image,
+            image: imgBase64,
             user: user._id,
             game: game._id
         });
