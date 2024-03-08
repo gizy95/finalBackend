@@ -4,7 +4,7 @@ import Game from "../models/game.js";
 
 export const postPost = async (req, res) => {
     try {
-        const { content, userId, gameId } = req.body;
+        const { content, userId, gameId, image } = req.body;
 
         let imgBase64 = '';
 
