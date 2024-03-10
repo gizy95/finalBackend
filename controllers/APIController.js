@@ -36,8 +36,8 @@ function changer(Region) {
 
 export const getUserData = async (req, res) => {
 
-    const Region = "euw1";
-    const PlayerName = "vala";
+    const Region = "eun1";
+    const PlayerName = "gizalo";
 
 
     const getUser = await getUserBySummoner(Region, PlayerName);

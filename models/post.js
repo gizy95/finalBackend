@@ -25,15 +25,14 @@ const postSchema = new mongoose.Schema({
     likes: {
         type: Array
     },
-    comments: {
-        type: Array
-    },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+
     type: {
         type: String,
         enum: ['Solo Player', 'Team Player'],
         default: 'Solo Player'
     },
-    
+
     started: {
         type: Date
     },
@@ -45,10 +44,10 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Game'
     },
-    
-    
-    
-    
+
+
+
+
 });
 
 const Post = mongoose.model('Post', postSchema);
