@@ -129,14 +129,15 @@ export const getCodeandSignUpwithDiscord = async (req, res) => {
         return res.status(400).json({ message: "Code not found" })
     }
     const code = req.query.code;
-
+    console.log(`bedo : ${code}`);
+    
     const params = new URLSearchParams({
         client_id: process.env.CLIENT_ID,
         client_secret: process.env.CLIENT_SECRET,
         grant_type: 'authorization_code',
         code,
         redirect_uri: process.env.DISCORD_REDIRECT_URI,
-        scope: "identify"
+        scope: "identify email"
     });
 
     const headers = {
@@ -175,6 +176,7 @@ export const getCodeandSignUpwithDiscord = async (req, res) => {
         console.log("signed in", user)
         return res.status(200).json({ token, user })
 
+
     } else {
 
         // ---------------------------------Logging in with discord---------------------------------
@@ -186,7 +188,23 @@ export const getCodeandSignUpwithDiscord = async (req, res) => {
 
 
 }
+export const getMe = async (req, res) => {
+    const  userId  = req.user.id;
+    console.log(userId)
+    try {
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(user);
+    
+}
+catch (error) {
+    res.sendStatus(500);
+    console.log(error)
+}
 
+}
 export const followandUnfollowUser = async (req, res) => {
     const { id } = req.params;
     const  userId  = req.user.id;
@@ -243,25 +261,12 @@ export const likeandUnlikeUser = async (req, res) => {
         } else {
         await Post.findByIdAndUpdate(id, { $push: { likes: userId } }, { new: true })
         
-        res.status(200).json({message: post._id,"post lıked by user_id": userId})
+        res.status(200).json({message: post._id,"post liked by user_id": userId})
         }
     } catch (error) {
         res.sendStatus(500)
         console.log(error)
     }
 }
-export const countLikes = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const post = await Post.findById(id);
-        if (!post) {
-            return res.status(404).json({ message: "Post not found" });
-        }
-        const likeCount = post.likes.length;
-        res.status(200).json({ count: likeCount });
-    } catch (error) {
-        res.sendStatus(500);
-        console.log(error);
-    }
-}
+
 

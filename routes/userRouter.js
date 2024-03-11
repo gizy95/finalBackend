@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, modifyUser, modifyAvatar, getSingleUser,getAllUsers,countLikes, loginUser, redirecttoDiscord, getCodeandSignUpwithDiscord,followandUnfollowUser,likeandUnlikeUser,getFollowers,getFollowings } from '../controllers/userController.js';
+import { registerUser, modifyUser, modifyAvatar, getSingleUser,getMe,getAllUsers,redirecttoDiscord, loginUser, getCodeandSignUpwithDiscord,followandUnfollowUser,likeandUnlikeUser,getFollowers,getFollowings } from '../controllers/userController.js';
 import { userCheck } from '../middlewares/userCheck.js'
 import { upload } from '../middlewares/upload.js'
 import { authMiddleware } from '../middlewares/userToken.js'
@@ -19,10 +19,12 @@ userRoutes.post('/follow/:id',authMiddleware,followandUnfollowUser)
 userRoutes.get('/followers:id/',authMiddleware,getFollowers)
 userRoutes.get('/followings:id/',authMiddleware,getFollowings)
 userRoutes.post('/like/:id',authMiddleware,likeandUnlikeUser)
-userRoutes.get('/likes/:id',countLikes)
 userRoutes.put('/avatar/:id', upload.single('avatar'), modifyAvatar);
 userRoutes.get('/auth/discord/callback', getCodeandSignUpwithDiscord)
+
+
 userRoutes.post('/comment/:id',authMiddleware,comment)
+userRoutes.get ('/me', authMiddleware, getMe)
 
 
 export default userRoutes;
