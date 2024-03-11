@@ -84,7 +84,7 @@ export const loginUser = async (req, res) => {
         }
 
         const token = generateToken({ email: user.email, id: user._id })
-        
+
         res.json({ token, user });
 
     } catch (err) {
@@ -189,18 +189,18 @@ export const getCodeandSignUpwithDiscord = async (req, res) => {
 
 export const followandUnfollowUser = async (req, res) => {
     const { id } = req.params;
-    const  userId  = req.user.id;
+    const userId = req.user.id;
 
     try {
         const user = await User.findById(userId)
         if (user.following.includes(id)) {
-        await User.findByIdAndUpdate(userId, { $pull: { following: id } }, { new: true })
-        await User.findByIdAndUpdate(id, { $pull: { followers: userId } }, { new: true })
-        res.status(200).json({message: "User unfollowed"})
+            await User.findByIdAndUpdate(userId, { $pull: { following: id } }, { new: true })
+            await User.findByIdAndUpdate(id, { $pull: { followers: userId } }, { new: true })
+            res.status(200).json({ message: "User unfollowed" })
         } else {
-        await User.findByIdAndUpdate(userId, { $push: { following: id } }, { new: true })
-        await User.findByIdAndUpdate(id, { $push: { followers: userId } }, { new: true })
-        res.status(200).json({message: "User followed"})
+            await User.findByIdAndUpdate(userId, { $push: { following: id } }, { new: true })
+            await User.findByIdAndUpdate(id, { $push: { followers: userId } }, { new: true })
+            res.status(200).json({ message: "User followed" })
         }
     } catch (error) {
         res.sendStatus(500)
@@ -208,7 +208,7 @@ export const followandUnfollowUser = async (req, res) => {
     }
 }
 
-   
+
 export const getFollowers = async (req, res) => {
     const { id } = req.params;
     try {
@@ -232,24 +232,30 @@ export const getFollowings = async (req, res) => {
 }
 
 export const likeandUnlikeUser = async (req, res) => {
-    const { id } = req.params;
-    const  userId  = req.user.id;
-
+    const { id } = req.user; // Assuming user ID is available in req.user
+    const { postId } = req.body; // Extract postId from the request body
+    console.log(postId)
     try {
-        const post = await Post.findById(id)
-        if (post.likes.includes(userId)) {
-        await Post.findByIdAndUpdate(id, { $pull: { likes: userId } }, { new: true })
-        res.status(200).json({message: post._id,"post unliked by user_id": userId})
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        if (post.likes.includes(id)) {
+            // Unlike the post
+            await Post.findByIdAndUpdate(postId, { $pull: { likes: id } }, { new: true });
+            return res.status(200).json({ message: post._id, "post unliked by user_id": id });
         } else {
-        await Post.findByIdAndUpdate(id, { $push: { likes: userId } }, { new: true })
-        
-        res.status(200).json({message: post._id,"post lıked by user_id": userId})
+            // Like the post
+            await Post.findByIdAndUpdate(postId, { $push: { likes: id } }, { new: true });
+            return res.status(200).json({ message: post._id, "post liked by user_id": id });
         }
     } catch (error) {
-        res.sendStatus(500)
-        console.log(error)
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
     }
-}
+};
+
 export const countLikes = async (req, res) => {
     const { id } = req.params;
     try {

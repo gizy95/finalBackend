@@ -2,6 +2,7 @@ import Post from "../models/post.js";
 import User from "../models/user.js";
 import Game from "../models/game.js";
 
+
 export const postPost = async (req, res) => {
     try {
         const { content, userId, gameId } = req.body;
@@ -59,15 +60,23 @@ export const getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find()
             .populate('user', 'name avatar')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'userId',
+                    select: 'name avatar'
+                },
+                select: 'content created'
+            })
             .populate('game', 'name')
-            .sort({ created: -1 }); // Sorting in descending order based on createdAt field
+            .sort({ created: -1 });
+
         res.status(200).json(posts);
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
     }
 }
-
 export const deletePost = async (req, res) => {
     const { id } = req.params;
     try {
