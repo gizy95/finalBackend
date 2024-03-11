@@ -1,4 +1,6 @@
 import express from 'express';
+
+
 import { postPost, getAllPosts, getFilteredAllPosts, deletePost, postEvent, getSinglePost } from '../controllers/postController.js';
 import { upload } from '../middlewares/upload.js'
 import { authMiddleware } from '../middlewares/userToken.js'
