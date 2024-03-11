@@ -1,16 +1,26 @@
 import Post from "../models/post.js";
 import User from "../models/user.js";
 import Game from "../models/game.js";
+import cloudinary from "../db/configCloudinary.js";
 
 
 export const postPost = async (req, res) => {
     try {
         const { content, userId, gameId } = req.body;
 
-        let imgBase64 = '';
+        let imageUrl = '';
 
         if (req.file) {
-            imgBase64 = req.file.buffer.toString('base64');
+            const result = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream({
+                    folder: "posts"
+                }, (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                });
+                uploadStream.end(req.file.buffer);
+            });
+            imageUrl = result.url;
         }
         const user = await User.findById(userId, 'name avatar');
         if (!user) {
@@ -24,7 +34,7 @@ export const postPost = async (req, res) => {
 
         const post = await Post.create({
             content,
-            image: imgBase64,
+            image: imageUrl,
             user: user._id,
             game: game._id
         });

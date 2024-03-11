@@ -20,7 +20,6 @@ app.use("/games", gameRoutes)
 app.use("/gameSettings", gameSettingsRoutes)
 app.use("/getinfo", getinfo)
 
-
 const startServer = async () => {
     await connectDB();
     app.listen(port, () => {
