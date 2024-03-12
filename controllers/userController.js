@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import axios from "axios";
 import Post from "../models/post.js";
+import cloudinary from "../db/configCloudinary.js";
 
 
 //const secretToken = crypto.randomBytes(32).toString('hex');
@@ -50,22 +51,36 @@ export const modifyUser = async (req, res) => {
 }
 
 
-
 export const modifyAvatar = async (req, res) => {
-    const { id } = req.params;
 
-    let imgBase64 = req.file.buffer.toString('base64');
     try {
-        const data = await User.findByIdAndUpdate(id, { avatar: imgBase64 }, { new: true })
-        if (!data) {
+        const { id } = req.params;
+        let imageUrl = '';
+
+        if (req.file) {
+            const result = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream({
+                    folder: "avatar"
+                }, (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                });
+                uploadStream.end(req.file.buffer);
+            });
+            imageUrl = result.url;
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(id, { avatar: imageUrl }, { new: true });
+
+        if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });
         }
-        res.status(200).json(data)
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error("Error modifying avatar:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
-    catch (error) {
-        res.sendStatus(500)
-    }
-}
+};
 
 export const loginUser = async (req, res) => {
     try {
@@ -75,7 +90,7 @@ export const loginUser = async (req, res) => {
         if (!user) {
             return res.status(404).send('User does not exist')
         }
-        console.log('nurıa', password, user.password);
+
 
         const validPassword = await bcrypt.compare(password, user.password)
 
