@@ -12,7 +12,12 @@ const app = express();
 const port = 8000 || process.env.PORT;
 
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:5175'
+};
+
+
+app.use(cors(corsOptions));
 app.use(express.json())
 app.use("/user", userRoutes)
 app.use("/post", postRoutes)

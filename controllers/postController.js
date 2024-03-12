@@ -70,6 +70,7 @@ export const getAllPosts = async (req, res) => {
             })
             .populate('game', 'name')
             .sort({ created: -1 });
+            console.log(posts, 'posts')
 
         res.status(200).json(posts);
     } catch (error) {

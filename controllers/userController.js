@@ -118,11 +118,11 @@ export const getAllUsers = async (req, res) => {
     }
 }
 
-export const redirecttoDiscord = async (req, res) => {
-    const Url = "https://discord.com/oauth2/authorize?client_id=1214873733408358450&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fuser%2Fauth%2Fdiscord%2Fcallback&scope=email+identify"
-    res.redirect(Url)
+// export const redirecttoDiscord = async (req, res) => {
+//     const Url = "https://discord.com/oauth2/authorize?client_id=1214873733408358450&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Fuser%2Fauth%2Fdiscord%2Fcallback&scope=email+identify"
+//     res.redirect(Url)
 
-}
+// }
 
 export const getCodeandSignUpwithDiscord = async (req, res) => {
     if (!req.query.code) {
@@ -179,9 +179,9 @@ export const getCodeandSignUpwithDiscord = async (req, res) => {
 
         // ---------------------------------Logging in with discord---------------------------------
 
-        const token = generateToken({ email: checkUserWithDiscord.email })
+        const token = generateToken({ email: checkUserWithDiscord.email, id: checkUserWithDiscord._id  })
         console.log(token)
-        return res.status(201).json({ token, checkUserWithDiscord, message: "User already exists" })
+        return res.status(201).json({ token, user: checkUserWithDiscord })
     }
 
 
