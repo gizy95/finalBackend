@@ -10,11 +10,6 @@ const gameSettingsSchema = new mongoose.Schema({
         type: String,
     },
 
-    APIUrl: {
-        type: String,
-        required: true
-    },
-
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

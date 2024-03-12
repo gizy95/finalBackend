@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, modifyUser, modifyAvatar, getSingleUser, getAllUsers, countLikes, loginUser, redirecttoDiscord, getCodeandSignUpwithDiscord, followandUnfollowUser, likeandUnlikeUser, getFollowers, getFollowings } from '../controllers/userController.js';
+import { registerUser, modifyUser, modifyAvatar, getSingleUser, getAllUsers, countLikes, loginUser, redirecttoDiscord, getCodeandSignUpwithDiscord, followandUnfollowUser, likeandUnlikeUser, getFollowers, getFollowings, getUser } from '../controllers/userController.js';
 import { userCheck } from '../middlewares/userCheck.js'
 import { upload } from '../middlewares/upload.js'
 import { authMiddleware } from '../middlewares/userToken.js'
@@ -15,6 +15,7 @@ userRoutes.post("/login", loginUser)
 userRoutes.get("/login/discord", redirecttoDiscord)
 userRoutes.put('/:id', authMiddleware, modifyUser);
 userRoutes.get('/:id', authMiddleware, getSingleUser);
+userRoutes.get('/user/:id', authMiddleware, getUser);
 userRoutes.post('/follow/:id', authMiddleware, followandUnfollowUser)
 userRoutes.get('/followers:id/', authMiddleware, getFollowers)
 userRoutes.get('/followings:id/', authMiddleware, getFollowings)
