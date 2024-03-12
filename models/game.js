@@ -10,10 +10,11 @@ const gameSchema = new mongoose.Schema({
         required: true
     },
 
-    API: {
+    key: {
         type: String,
         // required: true
     }
+
 
 });
 

@@ -4,8 +4,8 @@ import { getUserData, getUserTFTData } from '../controllers/APIController.js';
 const getinfo = express.Router();
 
 
-getinfo.get("/lol", getUserData)
-getinfo.get("/tft", getUserTFTData)
+getinfo.get("/:region/:tag/:key", getUserData)
+//getinfo.get("/tft", getUserTFTData)
 
 
 export default getinfo;

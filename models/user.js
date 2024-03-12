@@ -58,9 +58,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "Some text here"
     },
-    GameSettings: {
-        type: Array
-    }
+    gameSettings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'GameSettings' }] // Reference to GameSettings
 });
 const User = mongoose.model('User', userSchema);
 
