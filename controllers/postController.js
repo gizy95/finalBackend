@@ -69,7 +69,7 @@ export const getSinglePost = async (req, res) => {
 export const getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find()
-            .populate('user', 'name avatar')
+            .populate('user', 'username avatar')
             .populate({
                 path: 'comments',
                 populate: {
