@@ -4,7 +4,6 @@ import { get } from "mongoose";
 async function getUserBySummoner(Region, PlayerName, Game) {
 
     const API_CALL = `https://${Region}.api.riotgames.com/${Game}/summoner/v4/summoners/by-name/${PlayerName}?api_key=${process.env.RIOT_API_KEY}`;
-    console.log(API_CALL, "apiiiiiiii")
     const response = await fetch(API_CALL);
     if (!response.ok) {
         res.status(500).json({ message: "User not found" });
@@ -57,13 +56,6 @@ export const getUserData = async (req, res) => {
     const response2 = await fetch(userInfo);
     const userData = await response2.json();
 
-
-    const CHAMP_CALL = `https://${region}.api.riotgames.com/${key}/champion-mastery/v4/champion-masteries/by-puuid/${getUser.puuid}?api_key=${process.env.RIOT_API_KEY}`;
-    const response3 = await fetch(CHAMP_CALL);
-    const champions = await response3.json();
-
-
-
     const matchData = [];
     for (let i = 0; i < matchList.length - 18; i++) {
         const matchID = matchList[i];
@@ -74,7 +66,7 @@ export const getUserData = async (req, res) => {
     }
 
 
-    res.json({ userId, userData, matchData, champions });
+    res.json({ userId, userData, matchData });
 }
 
 export const getUserTFTData = async (req, res) => {
