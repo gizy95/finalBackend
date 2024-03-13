@@ -68,19 +68,25 @@ export const modifyAvatar = async (req, res) => {
                 uploadStream.end(req.file.buffer);
             });
             imageUrl = result.url;
-        }
 
-        const updatedUser = await User.findByIdAndUpdate(id, { avatar: imageUrl }, { new: true });
+            // Update the user document with the new avatar image URL
+            const updatedUser = await User.findByIdAndUpdate(id, { avatar: imageUrl }, { new: true });
 
-        if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            // Return the updated user object with the new avatar image URL
+            return res.status(200).json(updatedUser);
+        } else {
+            // If no file is provided, return a 400 Bad Request response
+            return res.status(400).json({ message: "No avatar file provided" });
         }
-        res.status(200).json(updatedUser);
     } catch (error) {
         console.error("Error modifying avatar:", error);
         res.status(500).json({ message: "Internal server error" });
     }
-};
+}
 
 export const loginUser = async (req, res) => {
     try {
