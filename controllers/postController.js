@@ -142,12 +142,25 @@ export const postEvent = async (req, res) => {
 
 export const getFilteredAllPosts = async (req, res) => {
     try {
-        const userId = req.user._id;
-        const posts = await Post.find({ userId }).populate('user', 'name avatar').populate('game', 'name');
+        const { id } = req.params; // Assuming 'id' is the user's ID
+        const posts = await Post.find({ user: id }) // Filter posts by user ID
+            .populate('user', 'username avatar')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'userId',
+                    select: 'name avatar'
+                },
+                select: 'content created'
+            })
+            .populate('game', 'name')
+            .sort({ created: -1 });
+
         res.status(200).json(posts);
+        console.log(posts);
     } catch (error) {
         console.error(error);
         res.sendStatus(500);
     }
-}
+};
 
